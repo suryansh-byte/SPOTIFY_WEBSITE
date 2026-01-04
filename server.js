@@ -72,5 +72,25 @@ app.get('/refresh_token', async (req, res) => {
   }
 });
 
+// YouTube search proxy (uses server-side API key so key is not exposed to client)
+app.get('/youtube-search', async (req, res) => {
+  const q = req.query.q;
+  const key = process.env.YT_API_KEY;
+  if (!q) return res.status(400).json({ error: 'missing q' });
+  if (!key) return res.status(500).json({ error: 'YT_API_KEY not configured on server' });
+  const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(q)}&key=${encodeURIComponent(key)}`;
+  try {
+    const r = await fetch(endpoint);
+    if (!r.ok) return res.status(r.status).send(await r.text());
+    const data = await r.json();
+    if (!data.items || data.items.length === 0) return res.json({ items: [] });
+    const item = data.items[0];
+    res.json({ videoId: item.id.videoId, snippet: item.snippet });
+  } catch (err) {
+    console.error('youtube-search error', err);
+    res.status(500).json({ error: 'youtube search failed' });
+  }
+});
+
 const PORT = process.env.PORT || 8888;
 app.listen(PORT, () => console.log(`Auth server listening on ${PORT}`));
