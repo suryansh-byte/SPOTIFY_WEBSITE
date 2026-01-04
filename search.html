@@ -79,6 +79,8 @@
               placeholder="Search for songs, artists, albums, or podcasts"
               autocomplete="off"
             />
+            <button id="spotifyLoginBtn" style="margin-left:8px;">Login with Spotify</button>
+            <span id="spotifyStatus" style="color:#b3b3b3; margin-left:8px; font-size:0.9rem;"></span>
           </div>
           <div id="results" class="results" aria-live="polite"></div>
           <div id="empty" class="search-empty" style="display:none;">No results</div>
@@ -299,6 +301,7 @@
                 </div>
                 <div class="result-actions">
                   <button class="play">▶ Preview</button>
+                  <button class="playFull">▶ Play Full</button>
                 </div>
               </div>
             `;
@@ -317,6 +320,39 @@
               };
               player.playTrack(track);
             });
+            const playFullBtn = el.querySelector('.playFull');
+            playFullBtn.addEventListener('click', async ()=>{
+              // Attempt to play full track via Spotify Web API
+              if (!window.spotifyToken) {
+                // open auth server login
+                window.open('http://localhost:8888/login', '_blank');
+                return;
+              }
+              const q = `${el.dataset.track} ${el.dataset.artist}`;
+              try {
+                const searchUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=1`;
+                const searchRes = await fetch(searchUrl, { headers: { Authorization: 'Bearer ' + window.spotifyToken } });
+                const searchData = await searchRes.json();
+                if (searchData.tracks && searchData.tracks.items && searchData.tracks.items.length>0) {
+                  const uri = searchData.tracks.items[0].uri;
+                  // ensure device_id exists
+                  if (!window.spotifyDeviceId) {
+                    alert('Spotify player not ready. After login, allow the Web Playback SDK to initialize.');
+                    return;
+                  }
+                  await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${window.spotifyDeviceId}`, {
+                    method: 'PUT',
+                    headers: { Authorization: 'Bearer ' + window.spotifyToken, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ uris: [uri] })
+                  });
+                } else {
+                  alert('No matching Spotify track found');
+                }
+              } catch (err) {
+                console.error(err);
+                alert('Error playing full track via Spotify API');
+              }
+            });
           });
 
         } catch (err) {
@@ -327,6 +363,53 @@
 
       function escapeHtml(s){
         return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
+      }
+    })();
+  </script>
+
+  <script>
+    // Spotify integration: read token from URL fragment, initialize Web Playback SDK
+    (function(){
+      const spotifyLoginBtn = document.getElementById('spotifyLoginBtn');
+      const statusEl = document.getElementById('spotifyStatus');
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        const params = new URLSearchParams(hash);
+        const token = params.get('access_token');
+        if (token) {
+          window.spotifyToken = token;
+          localStorage.setItem('spotify_token', token);
+          statusEl.textContent = 'Logged in';
+        }
+      }
+      if (!window.spotifyToken) window.spotifyToken = localStorage.getItem('spotify_token');
+      if (window.spotifyToken) statusEl.textContent = 'Logged in';
+
+      spotifyLoginBtn.addEventListener('click', ()=>{
+        window.open('http://localhost:8888/login', '_blank');
+      });
+
+      // Load Web Playback SDK if we have a token
+      if (window.spotifyToken) {
+        const script = document.createElement('script');
+        script.src = 'https://sdk.scdn.co/spotify-player.js';
+        document.head.appendChild(script);
+        window.onSpotifyWebPlaybackSDKReady = () => {
+          const token = window.spotifyToken;
+          const player = new Spotify.Player({
+            name: 'My Web Playback SDK Player',
+            getOAuthToken: cb => { cb(token); }
+          });
+
+          // Ready
+          player.addListener('ready', ({ device_id }) => {
+            console.log('Ready with Device ID', device_id);
+            window.spotifyDeviceId = device_id;
+            statusEl.textContent = 'Player ready';
+          });
+
+          player.connect();
+        };
       }
     })();
   </script>
