@@ -6,19 +6,23 @@
   <title>Sign up — Spotify</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Minimal Spotify-like signup styling */
-    .signup-wrapper{max-width:920px;margin:48px auto;padding:32px;display:flex;gap:40px;align-items:flex-start}
-    .signup-left{flex:1}
-    .signup-right{width:360px;background:#121212;padding:28px;border-radius:8px;color:#fff}
-    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .brand img{height:36px}
-    h1{font-size:28px;margin:0 0 12px}
-    p.lead{color:#b3b3b3}
-    label{display:block;margin-top:12px;color:#b3b3b3;font-size:14px}
-    input[type=text],input[type=email],input[type=password],select{width:100%;padding:10px;margin-top:6px;border-radius:6px;background:#fff;border:1px solid #ddd}
+    :root{--bg:#0f1419;--card:#121212;--muted:#b3b3b3;--accent:#1db954}
+    body{background:linear-gradient(180deg,#08121a 0%, #0f1a24 100%);color:#fff;font-family:Arial,Helvetica,sans-serif}
+    .signup-wrapper{max-width:1100px;margin:48px auto;padding:40px;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:start}
+    .signup-left{padding:24px}
+    .signup-right{background:var(--card);padding:28px;border-radius:12px;color:#fff;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .brand img{height:40px}
+    h1{font-size:34px;margin:6px 0 8px}
+    p.lead{color:var(--muted);margin-bottom:18px}
+    .hero-illus{height:320px;border-radius:12px;background:linear-gradient(135deg,#0b8 0%, #18b 100%);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:rgba(255,255,255,0.9)}
+    label{display:block;margin-top:12px;color:var(--muted);font-size:13px}
+    input[type=text],input[type=email],input[type=password],select{width:100%;padding:12px;margin-top:8px;border-radius:8px;background:#fff;border:none;color:#000}
     .row{display:flex;gap:12px}
-    .btn-primary{margin-top:18px;background:#1db954;color:#fff;padding:10px 14px;border:none;border-radius:24px;cursor:pointer;font-weight:700}
-    .legal{font-size:12px;color:#b3b3b3;margin-top:12px}
+    .btn-primary{margin-top:18px;background:var(--accent);color:#fff;padding:12px 16px;border:none;border-radius:28px;cursor:pointer;font-weight:700;width:100%}
+    .legal{font-size:12px;color:var(--muted);margin-top:12px}
+    .small-link{color:var(--muted);font-size:13px}
+    @media(max-width:880px){.signup-wrapper{grid-template-columns:1fr;padding:20px}.hero-illus{height:180px}}
   </style>
 </head>
 <body>
@@ -29,11 +33,13 @@
       </div>
       <h1>Sign up for free to start listening.</h1>
       <p class="lead">Music for everyone. Listen to millions of songs on your device.</p>
-      <ul style="color:#b3b3b3;margin-top:20px">
+      <div class="hero-illus">Discover, create, and share playlists — wherever you are.</div>
+      <ul style="color:var(--muted);margin-top:18px;line-height:1.6">
         <li>No credit card required</li>
-        <li>Create playlists and share</li>
-        <li>Discover new music</li>
+        <li>Create playlists and share with friends</li>
+        <li>Personalized recommendations and charts</li>
       </ul>
+      <p class="small-link" style="margin-top:18px">Already have an account? <a href="user.html">Log in</a></p>
     </div>
 
     <div class="signup-right">
