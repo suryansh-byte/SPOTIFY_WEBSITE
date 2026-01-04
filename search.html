@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <title>Spotify – Search</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Simple styles for search results */
+    .results { margin-top: 16px; display: grid; gap: 12px; }
+    .result-item { display:flex; gap:12px; align-items:center; padding:8px; background:rgba(255,255,255,0.03); border-radius:6px; }
+    .result-item img { width:64px; height:64px; border-radius:6px; object-fit:cover; }
+    .result-meta { flex:1; min-width:0; }
+    .result-title { font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .result-sub { color:#b3b3b3; font-size:0.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .result-actions { display:flex; gap:8px; }
+    .search-empty { color:#b3b3b3; margin-top:12px; }
+  </style>
 </head>
 <body>
   <div class="spotify-app">
@@ -64,11 +75,16 @@
           <div class="search-bar-wrapper">
             <span class="search-icon">🔍</span>
             <input
+              id="searchInput"
               type="text"
               class="search-input"
               placeholder="Search for songs, artists, albums, or podcasts"
+              autocomplete="off"
             />
           </div>
+          <div id="results" class="results" aria-live="polite"></div>
+          <div id="empty" class="search-empty" style="display:none;">No results</div>
+          
         </section>
 
         <!-- Browse all style grid -->
@@ -103,6 +119,72 @@
             <span class="player-artist">Artist name</span>
           </div>
         </div>
+          <script>
+            (function(){
+              const input = document.getElementById('searchInput');
+              const results = document.getElementById('results');
+              const empty = document.getElementById('empty');
+              let debounceTimer = null;
+              let currentAudio = null;
+
+              input.addEventListener('input', () => {
+                const q = input.value.trim();
+                clearTimeout(debounceTimer);
+                if (!q) {
+                  results.innerHTML = '';
+                  empty.style.display = 'none';
+                  if (currentAudio) { currentAudio.pause(); }
+                  return;
+                }
+                debounceTimer = setTimeout(() => search(q), 300);
+              });
+
+              async function search(q) {
+                results.innerHTML = '<div class="search-empty">Searching…</div>';
+                empty.style.display = 'none';
+                try {
+                  const url = `https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=song&limit=25`;
+                  const res = await fetch(url);
+                  const data = await res.json();
+                  if (!data.results || data.results.length === 0) {
+                    results.innerHTML = '';
+                    empty.style.display = 'block';
+                    return;
+                  }
+                  empty.style.display = 'none';
+                  results.innerHTML = data.results.map(r => `
+                    <div class="result-item">
+                      <img src="${r.artworkUrl100}" alt="artwork">
+                      <div class="result-meta">
+                        <div class="result-title">${escapeHtml(r.trackName)}</div>
+                        <div class="result-sub">${escapeHtml(r.artistName)} — ${escapeHtml(r.collectionName)}</div>
+                      </div>
+                      <div class="result-actions">
+                        <button class="play" data-preview="${r.previewUrl}">▶ Preview</button>
+                        <a href="${r.trackViewUrl}" target="_blank" rel="noopener">Open</a>
+                      </div>
+                    </div>
+                  `).join('');
+
+                  results.querySelectorAll('.play').forEach(btn => btn.addEventListener('click', e => {
+                    const url = e.currentTarget.dataset.preview;
+                    if (!url) return;
+                    if (currentAudio) { currentAudio.pause(); }
+                    currentAudio = new Audio(url);
+                    currentAudio.play();
+                  }));
+
+                } catch (err) {
+                  results.innerHTML = '<div class="search-empty">Error searching</div>';
+                  console.error(err);
+                }
+              }
+
+              function escapeHtml(s){
+                return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '';
+              }
+            })();
+          </script>
 
         <div class="player-center">
           <div class="player-controls">
