@@ -121,11 +121,119 @@
         </div>
           <script>
             (function(){
+              // Simple player manager
+              const player = (function(){
+                const cover = document.getElementById('playerCover');
+                const title = document.getElementById('playerTitle');
+                const artist = document.getElementById('playerArtist');
+                const playBtn = document.getElementById('playBtn');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const currentTimeEl = document.getElementById('currentTime');
+                const durationEl = document.getElementById('durationTime');
+                const progress = document.getElementById('progress');
+                const barFill = document.getElementById('barFill');
+                const volBar = document.getElementById('volBar');
+                const volFill = document.getElementById('volFill');
+                const muteBtn = document.getElementById('muteBtn');
+
+                let audio = new Audio();
+                audio.crossOrigin = 'anonymous';
+                let playlist = [];
+                let index = -1;
+
+                function formatTime(s){
+                  if (!isFinite(s)) return '0:00';
+                  const m = Math.floor(s/60); const sec = Math.floor(s%60).toString().padStart(2,'0');
+                  return `${m}:${sec}`;
+                }
+
+                audio.addEventListener('timeupdate', ()=>{
+                  currentTimeEl.textContent = formatTime(audio.currentTime);
+                  const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+                  barFill.style.width = pct + '%';
+                });
+
+                audio.addEventListener('durationchange', ()=>{
+                  durationEl.textContent = formatTime(audio.duration);
+                });
+
+                audio.addEventListener('ended', ()=>{
+                  // auto-next
+                  playNext();
+                });
+
+                playBtn.addEventListener('click', ()=>{
+                  if (audio.paused) audio.play(); else audio.pause();
+                  updatePlayButton();
+                });
+
+                audio.addEventListener('play', updatePlayButton);
+                audio.addEventListener('pause', updatePlayButton);
+
+                function updatePlayButton(){
+                  playBtn.textContent = audio.paused ? '▶' : '⏸';
+                }
+
+                progress.addEventListener('click', (e)=>{
+                  const rect = progress.getBoundingClientRect();
+                  const pct = (e.clientX - rect.left)/rect.width;
+                  if (audio.duration) audio.currentTime = pct * audio.duration;
+                });
+
+                volBar.addEventListener('click', (e)=>{
+                  const rect = volBar.getBoundingClientRect();
+                  const pct = Math.min(1, Math.max(0, (e.clientX - rect.left)/rect.width));
+                  audio.volume = pct;
+                  volFill.style.width = (pct*100) + '%';
+                });
+
+                muteBtn.addEventListener('click', ()=>{
+                  audio.muted = !audio.muted;
+                  muteBtn.textContent = audio.muted ? '🔈' : '🔊';
+                });
+
+                prevBtn.addEventListener('click', ()=>{ playPrev(); });
+                nextBtn.addEventListener('click', ()=>{ playNext(); });
+
+                function playPrev(){
+                  if (playlist.length === 0) return;
+                  index = (index - 1 + playlist.length) % playlist.length;
+                  loadAndPlay(index);
+                }
+
+                function playNext(){
+                  if (playlist.length === 0) return;
+                  index = (index + 1) % playlist.length;
+                  loadAndPlay(index);
+                }
+
+                function loadAndPlay(i){
+                  const item = playlist[i];
+                  if (!item) return;
+                  audio.src = item.previewUrl;
+                  cover.src = item.artworkUrl100 || '';
+                  title.textContent = item.trackName || '';
+                  artist.textContent = item.artistName || '';
+                  audio.play();
+                  updatePlayButton();
+                }
+
+                function playTrack(track){
+                  // insert at next position and play
+                  playlist.unshift(track);
+                  index = 0;
+                  loadAndPlay(index);
+                }
+
+                return { playTrack };
+              })();
+
+              // Search UI -> use player
               const input = document.getElementById('searchInput');
               const results = document.getElementById('results');
               const empty = document.getElementById('empty');
               let debounceTimer = null;
-              let currentAudio = null;
 
               input.addEventListener('input', () => {
                 const q = input.value.trim();
@@ -133,7 +241,6 @@
                 if (!q) {
                   results.innerHTML = '';
                   empty.style.display = 'none';
-                  if (currentAudio) { currentAudio.pause(); }
                   return;
                 }
                 debounceTimer = setTimeout(() => search(q), 300);
@@ -152,27 +259,44 @@
                     return;
                   }
                   empty.style.display = 'none';
-                  results.innerHTML = data.results.map(r => `
-                    <div class="result-item">
-                      <img src="${r.artworkUrl100}" alt="artwork">
-                      <div class="result-meta">
-                        <div class="result-title">${escapeHtml(r.trackName)}</div>
-                        <div class="result-sub">${escapeHtml(r.artistName)} — ${escapeHtml(r.collectionName)}</div>
+                  results.innerHTML = data.results.map(r => {
+                    const track = {
+                      previewUrl: r.previewUrl || '',
+                      artworkUrl100: r.artworkUrl100 || '',
+                      trackName: r.trackName || '',
+                      artistName: r.artistName || '',
+                      collectionName: r.collectionName || '',
+                      trackViewUrl: r.trackViewUrl || ''
+                    };
+                    return `
+                      <div class="result-item" data-preview="${escapeHtml(track.previewUrl)}" data-artwork="${escapeHtml(track.artworkUrl100)}" data-track="${escapeHtml(track.trackName)}" data-artist="${escapeHtml(track.artistName)}" data-url="${escapeHtml(track.trackViewUrl)}">
+                        <img src="${track.artworkUrl100}" alt="artwork">
+                        <div class="result-meta">
+                          <div class="result-title">${escapeHtml(track.trackName)}</div>
+                          <div class="result-sub">${escapeHtml(track.artistName)} — ${escapeHtml(track.collectionName)}</div>
+                        </div>
+                        <div class="result-actions">
+                          <button class="play">▶ Preview</button>
+                          <a href="${track.trackViewUrl}" target="_blank" rel="noopener">Open</a>
+                        </div>
                       </div>
-                      <div class="result-actions">
-                        <button class="play" data-preview="${r.previewUrl}">▶ Preview</button>
-                        <a href="${r.trackViewUrl}" target="_blank" rel="noopener">Open</a>
-                      </div>
-                    </div>
-                  `).join('');
+                    `;
+                  }).join('');
 
-                  results.querySelectorAll('.play').forEach(btn => btn.addEventListener('click', e => {
-                    const url = e.currentTarget.dataset.preview;
-                    if (!url) return;
-                    if (currentAudio) { currentAudio.pause(); }
-                    currentAudio = new Audio(url);
-                    currentAudio.play();
-                  }));
+                  // wire play buttons to player
+                  results.querySelectorAll('.result-item').forEach(el => {
+                    const btn = el.querySelector('.play');
+                    btn.addEventListener('click', ()=>{
+                      const track = {
+                        previewUrl: el.dataset.preview,
+                        artworkUrl100: el.dataset.artwork,
+                        trackName: el.dataset.track,
+                        artistName: el.dataset.artist,
+                        trackViewUrl: el.dataset.url
+                      };
+                      player.playTrack(track);
+                    });
+                  });
 
                 } catch (err) {
                   results.innerHTML = '<div class="search-empty">Error searching</div>';
@@ -181,7 +305,7 @@
               }
 
               function escapeHtml(s){
-                return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '';
+                return s ? s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : '';
               }
             })();
           </script>
@@ -194,21 +318,34 @@
           </div>
           <div class="player-progress">
             <span class="time">0:00</span>
-            <div class="bar">
-              <div class="bar-fill"></div>
-            </div>
-            <span class="time">3:45</span>
-          </div>
-        </div>
+            <footer class="player">
+              <div class="player-left">
+                <img id="playerCover" src="" alt="cover" class="player-cover" />
+                <div class="player-meta">
+                  <span id="playerTitle" class="player-title">Song title</span>
+                  <span id="playerArtist" class="player-artist">Artist name</span>
+                </div>
+              </div>
 
-        <div class="player-right">
-          <button>🔊</button>
-          <div class="vol-bar">
-            <div class="vol-fill"></div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </div>
-</body>
-</html>
+              <div class="player-center">
+                <div class="player-controls">
+                  <button id="prevBtn">⏮</button>
+                  <button id="playBtn" class="play-btn">▶</button>
+                  <button id="nextBtn">⏭</button>
+                </div>
+                <div class="player-progress">
+                  <span id="currentTime" class="time">0:00</span>
+                  <div id="progress" class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div id="barFill" class="bar-fill"></div>
+                  </div>
+                  <span id="durationTime" class="time">0:00</span>
+                </div>
+              </div>
+
+              <div class="player-right">
+                <button id="muteBtn">🔊</button>
+                <div id="volBar" class="vol-bar">
+                  <div id="volFill" class="vol-fill" style="width:70%"></div>
+                </div>
+              </div>
+            </footer>
