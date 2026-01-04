@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign up — Spotify</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Minimal Spotify-like signup styling */
+    .signup-wrapper{max-width:920px;margin:48px auto;padding:32px;display:flex;gap:40px;align-items:flex-start}
+    .signup-left{flex:1}
+    .signup-right{width:360px;background:#121212;padding:28px;border-radius:8px;color:#fff}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+    .brand img{height:36px}
+    h1{font-size:28px;margin:0 0 12px}
+    p.lead{color:#b3b3b3}
+    label{display:block;margin-top:12px;color:#b3b3b3;font-size:14px}
+    input[type=text],input[type=email],input[type=password],select{width:100%;padding:10px;margin-top:6px;border-radius:6px;background:#fff;border:1px solid #ddd}
+    .row{display:flex;gap:12px}
+    .btn-primary{margin-top:18px;background:#1db954;color:#fff;padding:10px 14px;border:none;border-radius:24px;cursor:pointer;font-weight:700}
+    .legal{font-size:12px;color:#b3b3b3;margin-top:12px}
+  </style>
+</head>
+<body>
+  <div class="signup-wrapper">
+    <div class="signup-left">
+      <div class="brand">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify logo" />
+      </div>
+      <h1>Sign up for free to start listening.</h1>
+      <p class="lead">Music for everyone. Listen to millions of songs on your device.</p>
+      <ul style="color:#b3b3b3;margin-top:20px">
+        <li>No credit card required</li>
+        <li>Create playlists and share</li>
+        <li>Discover new music</li>
+      </ul>
+    </div>
+
+    <div class="signup-right">
+      <form id="signupForm">
+        <label for="email">What's your email?</label>
+        <input id="email" type="email" placeholder="Enter your email" required />
+
+        <label for="confirmEmail">Confirm email</label>
+        <input id="confirmEmail" type="email" placeholder="Confirm your email" required />
+
+        <label for="password">Create a password</label>
+        <input id="password" type="password" placeholder="Create a password" required />
+
+        <label for="displayName">What should we call you?</label>
+        <input id="displayName" type="text" placeholder="Profile name" required />
+
+        <div class="row">
+          <div style="flex:1">
+            <label for="dob">Date of birth</label>
+            <input id="dob" type="text" placeholder="DD/MM/YYYY" />
+          </div>
+          <div style="width:120px">
+            <label for="gender">Gender</label>
+            <select id="gender"><option>Prefer not to say</option><option>Male</option><option>Female</option></select>
+          </div>
+        </div>
+
+        <label style="margin-top:14px"><input id="newsletter" type="checkbox" /> I would like to receive news and offers</label>
+
+        <div class="legal">By clicking on Sign up, you agree to Spotify's Terms and that you have read our Data Policy.</div>
+
+        <button id="signupBtn" class="btn-primary" type="submit">Sign up</button>
+      </form>
+
+      <script>
+        document.getElementById('signupForm').addEventListener('submit', (e)=>{
+          e.preventDefault();
+          const email = document.getElementById('email').value.trim();
+          const confirm = document.getElementById('confirmEmail').value.trim();
+          const password = document.getElementById('password').value;
+          if (!email || !confirm || !password) { alert('Please fill required fields'); return; }
+          if (email !== confirm) { alert('Emails do not match'); return; }
+          // This is a demo UI only — do not actually create accounts here.
+          alert('Account created (demo).');
+          window.location.href = 'index.html';
+        });
+      </script>
+    </div>
+  </div>
+</body>
+</html>
