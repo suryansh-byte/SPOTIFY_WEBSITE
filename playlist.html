@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spotify – Playlist</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="spotify-app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img
+          src="https://st.perplexity.ai/estatic/0b226c450798410ac541646c86ec31afd840e5beab817a5d84fa821e7db61981ec84c3b4a3f072a7a2e1899c9fb06c6e2a7db3ae3ec3f91788dad50f6b8f6ba96f5ffdb3693668370bb804692067c00f9a4e72c0b91dfe8b10e0c0fdaea5f5f2"
+          alt="Spotify"
+          class="logo-img"
+        />
+      </div>
+
+      <nav class="nav-main">
+        <a href="index.html">
+          <span class="nav-icon">🏠</span>
+          <span>Home</span>
+        </a>
+        <a href="search.html">
+          <span class="nav-icon">🔍</span>
+          <span>Search</span>
+        </a>
+        <a href="#" class="active">
+          <span class="nav-icon">📚</span>
+          <span>Your Library</span>
+        </a>
+      </nav>
+
+      <nav class="nav-secondary">
+        <a href="#">
+          <span class="nav-icon">＋</span>
+          <span>Create Playlist</span>
+        </a>
+        <a href="#">
+          <span class="nav-icon">❤</span>
+          <span>Liked Songs</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main area -->
+    <div class="main-area">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="arrows">
+          <button>&lt;</button>
+          <button>&gt;</button>
+        </div>
+        <button class="user-btn">User</button>
+      </header>
+
+      <!-- Playlist content -->
+      <main class="content playlist-page">
+        <!-- Playlist header -->
+        <section class="playlist-header">
+          <div class="playlist-cover"></div>
+          <div class="playlist-info">
+            <span class="playlist-label">Playlist</span>
+            <h1 class="playlist-title">Coding Vibes</h1>
+            <p class="playlist-description">
+              Chill beats and lo‑fi tracks to keep you focused while you code.
+            </p>
+            <p class="playlist-meta">
+              <span class="playlist-owner">User • </span>
+              <span>50 songs • 2 hr 45 min</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- Playlist controls -->
+        <section class="playlist-controls">
+          <button class="playlist-play-btn">▶</button>
+          <button class="playlist-icon-btn">❤</button>
+          <button class="playlist-icon-btn">⋯</button>
+        </section>
+
+        <!-- Table header -->
+        <section class="playlist-table-header">
+          <div class="col-index">#</div>
+          <div class="col-title">Title</div>
+          <div class="col-album">Album</div>
+          <div class="col-date">Date added</div>
+          <div class="col-duration">⏱</div>
+        </section>
+
+        <!-- Tracks list -->
+        <section class="playlist-tracks">
+          <!-- Track 1 -->
+          <article class="track-row">
+            <div class="col-index">1</div>
+            <div class="col-title">
+              <div class="track-main">
+                <div class="track-cover"></div>
+                <div class="track-text">
+                  <span class="track-name">Lo‑Fi Nights</span>
+                  <span class="track-artist">Beat Maker</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-album">Lo‑Fi Nights</div>
+            <div class="col-date">2025‑10‑01</div>
+            <div class="col-duration">3:12</div>
+          </article>
+
+          <!-- Track 2 -->
+          <article class="track-row">
+            <div class="col-index">2</div>
+            <div class="col-title">
+              <div class="track-main">
+                <div class="track-cover"></div>
+                <div class="track-text">
+                  <span class="track-name">Focus Flow</span>
+                  <span class="track-artist">Chill Collective</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-album">Focus Flow</div>
+            <div class="col-date">2025‑10‑03</div>
+            <div class="col-duration">2:56</div>
+          </article>
+
+          <!-- Track 3 -->
+          <article class="track-row">
+            <div class="col-index">3</div>
+            <div class="col-title">
+              <div class="track-main">
+                <div class="track-cover"></div>
+                <div class="track-text">
+                  <span class="track-name">Midnight Code</span>
+                  <span class="track-artist">Night Owl</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-album">Midnight Code</div>
+            <div class="col-date">2025‑10‑05</div>
+            <div class="col-duration">4:08</div>
+          </article>
+
+          <!-- Add more track-row blocks as needed -->
+        </section>
+      </main>
+
+      <!-- Bottom player -->
+      <footer class="player">
+        <div class="player-left">
+          <div class="player-cover"></div>
+          <div class="player-meta">
+            <span class="player-title">Song title</span>
+            <span class="player-artist">Artist name</span>
+          </div>
+        </div>
+
+        <div class="player-center">
+          <div class="player-controls">
+            <button>⏮</button>
+            <button class="play-btn">▶</button>
+            <button>⏭</button>
+          </div>
+          <div class="player-progress">
+            <span class="time">0:00</span>
+            <div class="bar">
+              <div class="bar-fill"></div>
+            </div>
+            <span class="time">3:45</span>
+          </div>
+        </div>
+
+        <div class="player-right">
+          <button>🔊</button>
+          <div class="vol-bar">
+            <div class="vol-fill"></div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

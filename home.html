@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spotify - Web Player</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="spotify-app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img
+      src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify" class="logo-img" />
+      </div>
+
+      <nav class="nav-main">
+        <a href="#" class="active">
+          <span class="nav-icon">🏠</span>
+          <span>Home</span>
+        </a>
+        <a href="#">
+          <span class="nav-icon">🔍</span>
+          <span>Search</span>
+        </a>
+        <a href="#">
+          <span class="nav-icon">📚</span>
+          <span>Your Library</span>
+        </a>
+      </nav>
+
+      <nav class="nav-secondary">
+        <a href="#">
+          <span class="nav-icon">＋</span>
+          <span>Create Playlist</span>
+        </a>
+        <a href="#">
+          <span class="nav-icon">❤</span>
+          <span>Liked Songs</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main area -->
+    <div class="main-area">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="arrows">
+          <button>&lt;</button>
+          <button>&gt;</button>
+        </div>
+        <button class="user-btn">User</button>
+      </header>
+
+      <!-- Scrollable content -->
+      <main class="content">
+        <!-- Good evening section -->
+        <section class="section">
+          <h2>Good evening</h2>
+          <div class="good-grid">
+            <article class="good-card">
+              <div class="thumb"></div>
+              <div class="good-title">Liked Songs</div>
+            </article>
+            <article class="good-card">
+              <div class="thumb"></div>
+              <div class="good-title">Daily Mix 1</div>
+            </article>
+            <article class="good-card">
+              <div class="thumb"></div>
+              <div class="good-title">Top Hits India</div>
+            </article>
+            <article class="good-card">
+              <div class="thumb"></div>
+              <div class="good-title">Chill Vibes</div>
+            </article>
+            <article class="good-card">
+              <div class="thumb"></div>
+              <div class="good-title">Coding Playlist</div>
+            </article>
+            <article class="good-card">
+              <div class="thumb"></div>
+              <div class="good-title">Retro Bollywood</div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Made for You -->
+        <section class="section">
+          <div class="section-header">
+            <h2>Made for You</h2>
+            <a href="#" class="see-all">Show all</a>
+          </div>
+          <div class="card-row">
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Daily Mix 1</h3>
+              <p>Your favorite artists, mixed.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Discover Weekly</h3>
+              <p>New music every week.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Release Radar</h3>
+              <p>Fresh releases for you.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Chill Mix</h3>
+              <p>Relax and unwind.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Focus Flow</h3>
+              <p>Stay in the zone.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Recently played -->
+        <section class="section">
+          <div class="section-header">
+            <h2>Recently played</h2>
+            <a href="#" class="see-all">Show all</a>
+          </div>
+          <div class="card-row">
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Workout Mix</h3>
+              <p>Pump up your energy.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Lo‑Fi Beats</h3>
+              <p>Beats to code to.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Bollywood Hits</h3>
+              <p>Top tracks from India.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Party Time</h3>
+              <p>Turn it up.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Old School</h3>
+              <p>Classic favorites.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom player bar -->
+      <footer class="player">
+        <div class="player-left">
+          <div class="player-cover"></div>
+          <div class="player-meta">
+            <span class="player-title">Song title</span>
+            <span class="player-artist">Artist name</span>
+          </div>
+        </div>
+
+        <div class="player-center">
+          <div class="player-controls">
+            <button>⏮</button>
+            <button class="play-btn">▶</button>
+            <button>⏭</button>
+          </div>
+          <div class="player-progress">
+            <span class="time">0:00</span>
+            <div class="bar">
+              <div class="bar-fill"></div>
+            </div>
+            <span class="time">3:45</span>
+          </div>
+        </div>
+
+        <div class="player-right">
+          <button>🔊</button>
+          <div class="vol-bar">
+            <div class="vol-fill"></div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

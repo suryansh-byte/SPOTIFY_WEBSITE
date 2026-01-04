@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spotify – Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="spotify-app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img
+      src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify" class="logo-img" />
+        
+      </div>
+
+      <nav class="nav-main">
+        <a href="index.html">
+          <span class="nav-icon">🏠</span>
+          <span>Home</span>
+        </a>
+        <a href="search.html">
+          <span class="nav-icon">🔍</span>
+          <span>Search</span>
+        </a>
+        <a href="playlist.html">
+          <span class="nav-icon">📚</span>
+          <span>Your Library</span>
+        </a>
+        <a href="user.html" class="active">
+          <span class="nav-icon">👤</span>
+          <span>Profile</span>
+        </a>
+        <a href="settings.html">
+          <span class="nav-icon">⚙</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <nav class="nav-secondary">
+        <a href="#">
+          <span class="nav-icon">＋</span>
+          <span>Create Playlist</span>
+        </a>
+        <a href="#">
+          <span class="nav-icon">❤</span>
+          <span>Liked Songs</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main area -->
+    <div class="main-area">
+      <!-- Top bar -->
+      <header class="topbar">
+        <div class="arrows">
+          <button>&lt;</button>
+          <button>&gt;</button>
+        </div>
+        <button class="user-btn">User</button>
+      </header>
+
+      <!-- Profile content -->
+      <main class="content profile-page">
+        <!-- Profile header -->
+        <section class="profile-header">
+          <div class="profile-avatar">U</div>
+          <div class="profile-info">
+            <span class="profile-label">Profile</span>
+            <h1 class="profile-name">Your Username</h1>
+            <p class="profile-meta">
+              <span>12 Public Playlists • </span>
+              <span>45 Followers • </span>
+              <span>30 Following</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- Recent activity summary -->
+        <section class="profile-summary section">
+          <h2>Overview</h2>
+          <div class="profile-summary-grid">
+            <div class="profile-summary-card">
+              <div class="summary-title">Recently played</div>
+              <div class="summary-desc">Your latest listening activity.</div>
+            </div>
+            <div class="profile-summary-card">
+              <div class="summary-title">Top artists this month</div>
+              <div class="summary-desc">The artists you listen to most.</div>
+            </div>
+            <div class="profile-summary-card">
+              <div class="summary-title">Top tracks this month</div>
+              <div class="summary-desc">Songs you’ve had on repeat.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Public playlists -->
+        <section class="section">
+          <div class="section-header">
+            <h2>Public Playlists</h2>
+            <a href="#" class="see-all">Show all</a>
+          </div>
+          <div class="card-row home-row">
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Coding Vibes</h3>
+              <p>Lo‑fi beats for late‑night coding.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Bollywood Hits</h3>
+              <p>Favorite tracks from Bollywood.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Workout Mix</h3>
+              <p>High‑energy songs for the gym.</p>
+            </article>
+            <article class="card">
+              <div class="card-cover"></div>
+              <h3>Chill Sunday</h3>
+              <p>Relax and unwind.</p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Following artists -->
+        <section class="section">
+          <div class="section-header">
+            <h2>Following</h2>
+            <a href="#" class="see-all">Show all</a>
+          </div>
+          <div class="profile-artist-row">
+            <div class="profile-artist-card">
+              <div class="artist-avatar">A</div>
+              <div class="artist-text">
+                <span class="artist-name">Artist One</span>
+                <span class="artist-meta">Artist</span>
+              </div>
+            </div>
+            <div class="profile-artist-card">
+              <div class="artist-avatar">B</div>
+              <div class="artist-text">
+                <span class="artist-name">Band Two</span>
+                <span class="artist-meta">Artist</span>
+              </div>
+            </div>
+            <div class="profile-artist-card">
+              <div class="artist-avatar">C</div>
+              <div class="artist-text">
+                <span class="artist-name">Chill Producer</span>
+                <span class="artist-meta">Artist</span>
+              </div>
+            </div>
+            <div class="profile-artist-card">
+              <div class="artist-avatar">D</div>
+              <div class="artist-text">
+                <span class="artist-name">DJ Deep</span>
+                <span class="artist-meta">Artist</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom player -->
+      <footer class="player">
+        <div class="player-left">
+          <div class="player-cover"></div>
+          <div class="player-meta">
+            <span class="player-title">Song title</span>
+            <span class="player-artist">Artist name</span>
+          </div>
+        </div>
+
+        <div class="player-center">
+          <div class="player-controls">
+            <button>⏮</button>
+            <button class="play-btn">▶</button>
+            <button>⏭</button>
+          </div>
+          <div class="player-progress">
+            <span class="time">0:00</span>
+            <div class="bar">
+              <div class="bar-fill"></div>
+            </div>
+            <span class="time">3:45</span>
+          </div>
+        </div>
+
+        <div class="player-right">
+          <button>🔊</button>
+          <div class="vol-bar">
+            <div class="vol-fill"></div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
